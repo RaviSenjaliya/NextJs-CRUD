@@ -9,10 +9,11 @@ import Edituser from "./[userid]/edituser/page";
 
 const FetchDataComponent = () => {
   const [data, setData] = useState([]);
+  const [edit, setEdit] = useState(-1); //update karvamate
 
   useEffect(() => {
     fetchData();
-  }, [data]);
+  }, [edit]);
 
   const fetchData = async () => {
     const response = await fetch("http://localhost:8080/api/tutorials");
@@ -27,7 +28,9 @@ const FetchDataComponent = () => {
       confirmButtonText: "Delete",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`http://localhost:8080/api/tutorials/${id}`);
+        axios.delete(`http://localhost:8080/api/tutorials/${id}`).then((v) => {
+          setEdit(v.data._id);
+        });
       }
     });
   };
@@ -35,7 +38,8 @@ const FetchDataComponent = () => {
   return (
     <div>
       <h1>
-        <AlertDialog />
+        {/* new user */}
+        <AlertDialog setEdit={setEdit} />
       </h1>
       <h1>Fetching Data Using Fetch API</h1>
 
@@ -60,7 +64,7 @@ const FetchDataComponent = () => {
                 </Link>
               </td>
               <td>
-                <Edituser id={item._id} />
+                <Edituser id={item._id} setEdit={setEdit} />
               </td>
               <td>
                 <Button

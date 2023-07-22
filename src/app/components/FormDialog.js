@@ -6,12 +6,9 @@ import DialogContent from "@mui/material/DialogContent";
 import TextField from "@mui/material/TextField";
 import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function AlertDialog() {
-  let rout = useRouter();
+export default function AlertDialog({ setEdit }) {
   const [open, setOpen] = useState(false);
   const [Data, setData] = useState({
     fname: "",
@@ -36,6 +33,7 @@ export default function AlertDialog() {
     e.preventDefault();
     axios.post("http://localhost:8080/api/tutorials", Data).then((v) => {
       console.log(v.data);
+      setEdit(v.data._id);
     });
     handleClose();
   };

@@ -6,18 +6,16 @@ import DialogContent from "@mui/material/DialogContent";
 import TextField from "@mui/material/TextField";
 import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function Edituser({ id }) {
-  let rout = useRouter();
+export default function Edituser({ id, setEdit }) {
   const [Data, setData] = useState({
     fname: "",
     lname: "",
     phone: "",
     clg: "",
   });
+
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -32,20 +30,20 @@ export default function Edituser({ id }) {
   };
 
   useEffect(() => {
-    getdata();
+    fetchData();
   }, []);
 
-  let getdata = () => {
-    axios.get(`http://localhost:8080/api/tutorials/${id}`).then((val) => {
-      setData(val.data);
-    });
+  const fetchData = async () => {
+    const response = await fetch(`http://localhost:8080/api/tutorials/${id}`);
+    const jsonData = await response.json();
+    setData(jsonData);
   };
 
   let musubmit = (e) => {
     e.preventDefault();
     axios.put(`http://localhost:8080/api/tutorials/${id}`, Data).then((v) => {
       console.log(v.data);
-      rout.push("/user");
+      setEdit(v.data._id);
     });
     handleClose();
   };
@@ -63,7 +61,7 @@ export default function Edituser({ id }) {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">New User</DialogTitle>
+          <DialogTitle id="alert-dialog-title">Edit User</DialogTitle>
           <DialogContent>
             <form onSubmit={musubmit}>
               <div>

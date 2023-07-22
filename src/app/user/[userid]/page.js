@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@mui/material";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -23,7 +24,7 @@ export default function page({ params }) {
       <p>Phone no: {data.phone} </p>
       <p>collage : {data.clg} </p>
       <Link href={"/user"}>
-        <button>go back</button>
+        <Button variant="contained">go back</Button>
       </Link>
     </div>
   );
